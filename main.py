@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import pandas as pd
 
 province = "limpopo"#input("Enter a province: ")
 city = "polokwane"#input("Enter a city: ")
@@ -16,9 +17,8 @@ soup = BeautifulSoup(page.text, 'html.parser')
 listings_raw = soup.find_all('div', class_ ="property-card-info")
 
 table_headers = [ "Title", "Num_Rooms", "Num_Baths", "Property_Type" ,"Suburb" ,"Price"]
-table_data = []
 
-tmp_table_row = []
+df = pd.DataFrame(columns=table_headers)
 
 for listing in listings_raw:
     tmp_table_row = []
@@ -37,6 +37,7 @@ for listing in listings_raw:
     tmp_table_row.append(suburb)
     tmp_table_row.append(price)
 
-    table_data.append(tmp_table_row)
+    length = len(df)
+    df.loc[length] = tmp_table_row
 
-print(table_data)
+print(df)
